@@ -7048,10 +7048,10 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-react-pure-modal@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/react-pure-modal/-/react-pure-modal-2.1.0.tgz#cf2860620614554f3a4f69c582c3265fe3575918"
-  integrity sha512-GM3rK1MsNaflci5zGAMh0BJhjxjnsjyE1nMLfmjG6LLdAm4Re9QZBC4utc3Ek+wJbIJRFwW5hwS25wWWHIIloA==
+react-pure-modal@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-pure-modal/-/react-pure-modal-2.2.0.tgz#08b47a626954e212734cfca57a4aa80a31d4caeb"
+  integrity sha512-YIXEPMnPnCaNDgVH2jwHabMUPEpeyKsSsH5j2UEV+ZPLRPFcmeLMS85M1iA08wfwps26kHCwVZmZQXg4laCZRw==
 
 react-refresh@^0.11.0:
   version "0.11.0"
