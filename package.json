@@ -9,7 +9,7 @@
     "react-dom": "^17.0.2",
     "react-pure-modal": "^2.1.0",
     "react-scripts": "5.0.0",
-    "react-select": "^5.2.2",
+    "react-select": "^5.4.0",
     "sass": "^1.49.9"
   },
   "scripts": {
