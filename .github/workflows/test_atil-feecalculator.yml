@@ -29,4 +29,4 @@ jobs:
           MY_VAR="1.0.${{github.run_number}}-${BRANCHNAME##*/}"
           octo pack --basePath=./build --id atil_feecalculator_client --version $MY_VAR --outFolder ./out --format zip
           octo push --package "./out/atil_feecalculator_client.${MY_VAR}.zip" --server="${{ secrets.OCTOPUS_SERVER }}" --apiKey="${{ secrets.OCTOPUS_APIKEY }}"
-          octo create-release --project="ATIL - Fee calculator Client" --server="${{ secrets.OCTOPUS_SERVER }}" --apiKey="${{ secrets.OCTOPUS_APIKEY }}" --channel=FT-Test
+          octo create-release --project="ATIL - Fee calculator Client" --server="${{ secrets.OCTOPUS_SERVER }}" --apiKey="${{ secrets.OCTOPUS_APIKEY }}" --channel=Test
