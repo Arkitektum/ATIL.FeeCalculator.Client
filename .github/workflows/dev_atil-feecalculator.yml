@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - "release/rc-*"
+      - "development"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,7 +17,7 @@ jobs:
       - name: npm install, build, and test
         run: |
           npm install
-          npm run build:test --if-present
+          npm run build:dev --if-present
           npm run test --if-present
 
       - name: checkout octopus
@@ -26,7 +26,7 @@ jobs:
       - name: pack & push to octo
         run: |
           BRANCHNAME=${{github.ref_name}}
-          MY_VAR="1.0.${{github.run_number}}-${BRANCHNAME##*/}"
+          MY_VAR="1.0.${{github.run_number}}-beta"
           octo pack --basePath=./build --id atil_feecalculator_client --version $MY_VAR --outFolder ./out --format zip
           octo push --package "./out/atil_feecalculator_client.${MY_VAR}.zip" --server="${{ secrets.OCTOPUS_SERVER }}" --apiKey="${{ secrets.OCTOPUS_APIKEY }}"
           octo create-release --project="ATIL - Fee calculator Client" --server="${{ secrets.OCTOPUS_SERVER }}" --apiKey="${{ secrets.OCTOPUS_APIKEY }}" --channel=FT-Test
