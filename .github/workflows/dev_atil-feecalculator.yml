@@ -7,15 +7,16 @@ jobs:
     runs-on: ubuntu-latest
     name: Build
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up Node.js version
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: "16.x"
 
       - name: npm install, build, and test
         run: |
+          cd src/
           npm install
           npm run build:dev --if-present
           npm run test --if-present
@@ -27,6 +28,8 @@ jobs:
         run: |
           BRANCHNAME=${{github.ref_name}}
           MY_VAR="1.0.${{github.run_number}}-beta"
-          octo pack --basePath=./build --id atil_feecalculator_client --version $MY_VAR --outFolder ./out --format zip
+          octo pack --basePath=./infrastructure --id atil_feecalculator_client-infrastructure --version $MY_VAR --outFolder ./infra --format zip
+          octo push --package "./infra/atil_feecalculator_client-infrastructure.${MY_VAR}.zip" --server="${{ secrets.OCTOPUS_SERVER }}" --apiKey="${{ secrets.OCTOPUS_APIKEY }}"
+          octo pack --basePath=./src/build --id atil_feecalculator_client --version $MY_VAR --outFolder ./out --format zip
           octo push --package "./out/atil_feecalculator_client.${MY_VAR}.zip" --server="${{ secrets.OCTOPUS_SERVER }}" --apiKey="${{ secrets.OCTOPUS_APIKEY }}"
           octo create-release --project="ATIL - Fee calculator Client" --server="${{ secrets.OCTOPUS_SERVER }}" --apiKey="${{ secrets.OCTOPUS_APIKEY }}" --channel=Dev
