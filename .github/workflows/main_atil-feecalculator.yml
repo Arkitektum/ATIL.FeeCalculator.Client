@@ -16,6 +16,7 @@ jobs:
 
       - name: npm install, build, and test
         run: |
+          cd src/
           npm install
           npm run build --if-present
           npm run test --if-present
@@ -26,6 +27,6 @@ jobs:
       - name: pack & push to octo
         run: |
           MY_VAR="1.0.${{github.run_number}}"
-          octo pack --basePath=./build --id atil_feecalculator_client --version $MY_VAR --outFolder ./out --format zip
+          octo pack --basePath=./src/build --id atil_feecalculator_client --version $MY_VAR --outFolder ./out --format zip
           octo push --package "./out/atil_feecalculator_client.${MY_VAR}.zip" --server="${{ secrets.OCTOPUS_SERVER }}" --apiKey="${{ secrets.OCTOPUS_APIKEY }}"
-          octo create-release --project="ATIL - Fee calculator Client" --server="${{ secrets.OCTOPUS_SERVER }}" --apiKey="${{ secrets.OCTOPUS_APIKEY }}" --channel=Prod
+          octo create-release --project="ATIL - Fee calculator Client" --server="${{ secrets.OCTOPUS_SERVER }}" --apiKey="${{ secrets.OCTOPUS_APIKEY }}" --channel=ft-prod
