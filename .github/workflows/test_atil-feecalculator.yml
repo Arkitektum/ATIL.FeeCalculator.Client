@@ -1,4 +1,4 @@
-on: 
+on:
   push:
     branches:
       - "release/rc-*"
@@ -8,12 +8,12 @@ jobs:
     name: Build
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Set up Node.js version
         uses: actions/setup-node@v1
         with:
-          node-version: '16.x'
-      
+          node-version: "16.x"
+
       - name: npm install, build, and test
         run: |
           npm install
@@ -23,7 +23,7 @@ jobs:
       - name: checkout octopus
         uses: OctopusDeploy/install-octopus-cli-action@v1.1.8
 
-      - name: pack & push to octo 
+      - name: pack & push to octo
         run: |
           BRANCHNAME=${{github.ref_name}}
           MY_VAR="1.0.${{github.run_number}}-${BRANCHNAME##*/}"
