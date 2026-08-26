@@ -60,10 +60,7 @@ resource AppServiceApp 'Microsoft.Web/sites@2024-04-01' = {
       remoteDebuggingEnabled: false
       appSettings: [
         {
-          name: 'WEBSITE_WEBDEPLOY_USE_SCM'
-          value: 'false'
-        }
-        {
+          // The SPA is built in CI and deployed prebuilt, so Oryx must not build on deploy.
           name: 'SCM_DO_BUILD_DURING_DEPLOYMENT'
           value: 'false'
         }
