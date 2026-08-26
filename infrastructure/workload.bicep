@@ -74,10 +74,16 @@ resource AppServiceApp 'Microsoft.Web/sites@2024-04-01' = {
 
 var privateEndpointName = 'pe-${appName}'
 
+resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' existing = {
+  name: privateDnsZoneName
+  scope: resourceGroup(rgSharedResources)
+}
+
 resource privateEndpoint 'Microsoft.Network/privateEndpoints@2023-05-01' = {
   name: privateEndpointName
   location: location
   properties: {
+    customNetworkInterfaceName: '${privateEndpointName}-nic'
     subnet: {
       id: resourceId(rgSharedResources,'Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
     }
@@ -91,18 +97,22 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2023-05-01' = {
       }
     ]
   }
-}
 
-module addToPrivateDns 'AddToPrivateDns.bicep' = {
-  name: 'addToPrivateDns'
-  params: {
-    privateDnsZoneName: privateDnsZoneName
-    privateEndpointName: privateEndpointName
-    appResourceGroupName: resourceGroup().name
-    appName: appName
+  // Azure derives the A-records from the endpoint itself (including <appName>.scm)
+  // and removes them again when the endpoint is deleted.
+  resource dnsZoneGroup 'privateDnsZoneGroups' = {
+    name: 'default'
+    properties: {
+      privateDnsZoneConfigs: [
+        {
+          name: replace(privateDnsZoneName, '.', '-')
+          properties: {
+            privateDnsZoneId: privateDnsZone.id
+          }
+        }
+      ]
+    }
   }
-  dependsOn: [privateEndpoint]
-  scope: resourceGroup(rgSharedResources)
 }
 
 @description('Resource ID of the App Service.')
