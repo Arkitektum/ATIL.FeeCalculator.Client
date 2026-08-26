@@ -1,23 +1,37 @@
-import PureModal from 'react-pure-modal';
+import { useEffect, useRef } from 'react';
 
 function ErrorModal({ message, onClose }) {
+   const dialogRef = useRef(null);
+   const isOpen = message !== null;
+
+   useEffect(
+      () => {
+         const dialog = dialogRef.current;
+
+         if (isOpen && !dialog.open) {
+            dialog.showModal();
+         } else if (!isOpen && dialog.open) {
+            dialog.close();
+         }
+      },
+      [isOpen]
+   );
+
    return (
-      <PureModal
-         header={
-            <span className="custom-panel-heading">
-               <span>En feil har oppstått</span>
-               <span className="close-button" role="button" onClick={onClose}></span>
-            </span>
-         }
-         footer={
-            <div>
-               <button onClick={onClose}>Lukk</button>
-            </div>
-         }
-         isOpen={message !== null}
-      >
-         <p>{message}</p>
-      </PureModal>
+      <dialog className="error-modal" ref={dialogRef} onCancel={onClose} onClose={onClose}>
+         <div className="error-modal__header">
+            <span>En feil har oppstått</span>
+            <span className="error-modal__close" role="button" aria-label="Lukk" onClick={onClose}></span>
+         </div>
+
+         <div className="error-modal__content">
+            <p>{message}</p>
+         </div>
+
+         <div className="error-modal__footer">
+            <button onClick={onClose}>Lukk</button>
+         </div>
+      </dialog>
    );
 }
 
