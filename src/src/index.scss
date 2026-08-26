@@ -1,7 +1,6 @@
-@import '~react-pure-modal/dist/react-pure-modal.min.css';
-@import './styles/_fonts.scss';
-@import './styles/_form.scss';
-@import './styles/_overrides.scss';
+@use './styles/fonts';
+@use './styles/form';
+@use './styles/overrides';
 
 body {
    margin: 0;

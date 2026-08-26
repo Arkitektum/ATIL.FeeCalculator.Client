@@ -4,10 +4,10 @@ import Select from 'react-select'
 import ErrorModal from 'components/ErrorModal/ErrorModal';
 import './Calculator.scss';
 
-const API_BASE_URI = process.env.REACT_APP_API_BASE_URI;
-const API_BYGNINGSTYPER_METHOD = process.env.REACT_APP_API_BYGNINGSTYPER_METHOD;
-const API_TILTAKSTYPER_METHOD = process.env.REACT_APP_API_TILTAKSTYPER_METHOD;
-const API_GEBYR_METHOD = process.env.REACT_APP_API_GEBYR_METHOD;
+const API_BASE_URI = import.meta.env.REACT_APP_API_BASE_URI;
+const API_BYGNINGSTYPER_METHOD = import.meta.env.REACT_APP_API_BYGNINGSTYPER_METHOD;
+const API_TILTAKSTYPER_METHOD = import.meta.env.REACT_APP_API_TILTAKSTYPER_METHOD;
+const API_GEBYR_METHOD = import.meta.env.REACT_APP_API_GEBYR_METHOD;
 
 function Calculator() {
    const [bygningstyper, setBygningstyper] = useState([]);

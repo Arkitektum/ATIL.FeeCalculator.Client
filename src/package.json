@@ -3,40 +3,21 @@
   "description": "Arbeidstilsynet Gebyrkalkulator",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "dependencies": {
-    "axios": "^0.26.1",
-    "env-cmd": "^10.1.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-pure-modal": "^2.1.0",
-    "react-scripts": "5.0.0",
-    "react-select": "^5.2.2",
-    "sass": "^1.49.9"
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-select": "^5.10.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.1.0",
+    "sass": "^1.103.1",
+    "vite": "^8.2.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "CI=false react-scripts build",
-    "build:test": "CI=false env-cmd -f .env.test react-scripts build",
-    "build:dev": "CI=false env-cmd -f .env.dev react-scripts build",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.3%",
-      "not dead",
-      "not ie 11",
-      "not safari 5.1",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "start": "vite",
+    "build": "vite build",
+    "build:dev": "vite build --mode dev",
+    "build:test": "vite build --mode test"
   }
 }
