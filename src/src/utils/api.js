@@ -1,11 +1,13 @@
-import axios from 'axios';
-
-export async function getAsync(url, options = {}) {
+export async function getAsync(url, { params } = {}) {
    try {
-      const defaultOptions = { method: 'get', url };
-      const response = await axios({ ...defaultOptions, ...options });
+      const query = params ? `?${new URLSearchParams(params)}` : '';
+      const response = await fetch(`${url}${query}`);
 
-      return response.data || null;
+      if (!response.ok) {
+         return null;
+      }
+
+      return await response.json();
    } catch (error) {
       return null;
    }

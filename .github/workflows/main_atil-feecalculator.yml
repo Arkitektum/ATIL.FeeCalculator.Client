@@ -7,26 +7,51 @@ jobs:
     runs-on: ubuntu-latest
     name: Build
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v5
+
+      - name: Compute sanitized version
+        run: |
+          echo VERSION=1.0.${GITHUB_RUN_NUMBER} >> $GITHUB_ENV
 
       - name: Set up Node.js version
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v5
         with:
-          node-version: "16.x"
+          node-version: "24.x"
 
-      - name: npm install, build, and test
+      - name: Install and build
         run: |
           cd src/
-          npm install
-          npm run build --if-present
-          npm run test --if-present
+          yarn install --frozen-lockfile
+          yarn build
 
       - name: checkout octopus
-        uses: OctopusDeploy/install-octopus-cli-action@v1.1.8
+        uses: OctopusDeploy/install-octopus-cli-action@v3.1.3
 
-      - name: pack & push to octo
-        run: |
-          MY_VAR="1.0.${{github.run_number}}"
-          octo pack --basePath=./src/build --id atil_feecalculator_client --version $MY_VAR --outFolder ./out --format zip
-          octo push --package "./out/atil_feecalculator_client.${MY_VAR}.zip" --server="${{ secrets.OCTOPUS_SERVER }}" --apiKey="${{ secrets.OCTOPUS_APIKEY }}"
-          octo create-release --project="ATIL - Fee calculator Client" --server="${{ secrets.OCTOPUS_SERVER }}" --apiKey="${{ secrets.OCTOPUS_APIKEY }}" --channel=ft-prod
+      - name: Create client zip
+        uses: OctopusDeploy/create-zip-package-action@v3
+        with:
+          package_id: atil_feecalculator_client
+          version: ${{ env.VERSION }}
+          base_path: src/build
+          output_folder: ./out
+          files: |
+            **/*
+
+      - name: Push packages
+        uses: OctopusDeploy/push-package-action@v3
+        with:
+          server: ${{ secrets.OCTOPUS_SERVER }}
+          api_key: ${{ secrets.OCTOPUS_APIKEY }}
+          space: 'Default'
+          packages: |
+            out/atil_feecalculator_client.${{ env.VERSION }}.zip
+
+      - name: Create release
+        uses: OctopusDeploy/create-release-action@v3
+        with:
+          server: ${{ secrets.OCTOPUS_SERVER }}
+          api_key: ${{ secrets.OCTOPUS_APIKEY }}
+          space: 'Default'
+          project: "ATIL - Fee calculator Client"
+          release_number: ${{ env.VERSION }}
+          channel: ft-prod
